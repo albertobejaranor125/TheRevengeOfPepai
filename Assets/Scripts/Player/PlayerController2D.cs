@@ -30,7 +30,8 @@ public class PlayerController2D : MonoBehaviour
     }
     void Update()
     {
-        if( _isJumpPressed && _isGrounded)
+        if (!TimerScript.Instance.IsPlaying) return;
+        if ( _isJumpPressed && _isGrounded)
         {
             Jump();
             _isJumpPressed = false;
@@ -38,6 +39,7 @@ public class PlayerController2D : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (!TimerScript.Instance.IsPlaying) return;
         Move();
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -69,6 +71,7 @@ public class PlayerController2D : MonoBehaviour
     }
     public void OnDash(InputAction.CallbackContext context)
     {
+        if (!TimerScript.Instance.IsPlaying) return;
         if (context.started)
         {
             Vector2 dir = _moveInput;
