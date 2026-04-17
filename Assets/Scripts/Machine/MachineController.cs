@@ -5,12 +5,17 @@ using UnityEngine;
 public class MachineController : MonoBehaviour
 {
     #region Variable
+    [Header("Machine Settings")]
     [SerializeField] private float _shakeAmount = 0.08f;
     [SerializeField] private Sprite _reparedMachine;
+    [Header("Audio Settings")]
+    [SerializeField] private AudioClip _repairSound;
     private bool _isFixed;
     private Vector3 _positionMachine;
     private SpriteRenderer _spriteRenderer;
     public static System.Action OnMachineDestroyed;
+    private float _spawnTime;
+    private AudioSource _audioSource;
     #endregion
     #region Unity Messages
     private void Awake()
@@ -18,6 +23,8 @@ public class MachineController : MonoBehaviour
         _isFixed = false;
         _positionMachine = transform.localPosition;
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _spawnTime = Time.time;
+        _audioSource = GetComponent<AudioSource>();
     }
     private void Update()
     {
@@ -27,6 +34,14 @@ public class MachineController : MonoBehaviour
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
+    {
+        PlayerController2D player = collision.gameObject.GetComponent<PlayerController2D>();
+        if (player != null && player.IsDashing && !_isFixed)
+        {
+            RepairMachine(player.LastDashDirection);
+        }
+    }
+    private void OnTriggerStay2D(Collider2D collision)
     {
         PlayerController2D player = collision.gameObject.GetComponent<PlayerController2D>();
         if (player != null && player.IsDashing && !_isFixed)
@@ -45,7 +60,13 @@ public class MachineController : MonoBehaviour
     private void RepairMachine(Vector2 dir)
     {
         Debug.Log("Machine repared");
-        //transform.localScale = Vector3.Lerp(Vector3.one, Vector3.one * 2f, 0.4f);
+        int points = 1;
+        float timeAlive = Time.time - _spawnTime;
+        if(timeAlive <= 2f)
+        {
+            points = 2;
+        }
+        ScoreController.Instance.AddScore(points);
         StartCoroutine(RepairAnimation());
         StartCoroutine(Knockback(dir));
         StartCoroutine(DisableAfterTimeFixed());
@@ -67,6 +88,7 @@ public class MachineController : MonoBehaviour
         }
         transform.localScale = target;
         _spriteRenderer.sprite = _reparedMachine;
+        _audioSource.PlayOneShot(_repairSound);
     }
     private IEnumerator Knockback(Vector2 dir)
     {
@@ -82,7 +104,6 @@ public class MachineController : MonoBehaviour
         }
         transform.position = target;
         _spriteRenderer.sortingOrder = 2;
-        ScoreController.Instance.AddScore(1);
     }
     private IEnumerator DisableAfterTimeFixed()
     {

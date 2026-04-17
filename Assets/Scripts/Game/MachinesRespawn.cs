@@ -10,9 +10,12 @@ public class MachinesRespawn : MonoBehaviour
     [Header("Spawn Settings")]
     [SerializeField] private float _minX = -11.30f;
     [SerializeField] private float _maxX = 11.30f;
-    [SerializeField] private float _pointY = -2.50f;
+    [SerializeField] private float _minY = -2.50f;
+    [SerializeField] private float _maxY = 2.50f;
     [SerializeField] private float _delaySpawn = 1.5f;
     [SerializeField] private int _maxMachines = 3;
+    [SerializeField] private LayerMask _machineMask;
+    [SerializeField] private LayerMask _platformMask;
     private int _currentMachines;
     #endregion
     #region Unity Messages
@@ -46,10 +49,37 @@ public class MachinesRespawn : MonoBehaviour
     private void SpawnMachines()
     {
         int indexSpawn = Random.Range(0, _machinesList.Count);
-        float randomX = Random.Range(_minX, _maxX);
-        Vector3 spawnPos = new Vector3(randomX, _pointY, 0f);
+        Vector3 spawnPos = Vector3.zero;
+        bool validPos = false;
+        int attempts = 0;
+        while(attempts < 20 && !validPos)
+        {
+            float randomX = Random.Range(_minX, _maxX);
+            float randomY = Random.Range(_minY, _maxY);
+            spawnPos = new Vector3(randomX, randomY, 0f);
+            if (IsValidPosition(spawnPos))
+            {
+                validPos = true;
+            }
+            attempts++;
+        }
         Instantiate(_machinesList[indexSpawn], spawnPos, Quaternion.identity);
         _currentMachines++;
+    }
+    private bool IsValidPosition(Vector3 position)
+    {
+        float machineRadius = 5f;
+        Collider2D[] machinesScene = Physics2D.OverlapCircleAll(position, machineRadius, _machineMask);
+        if (machinesScene.Length > 0)
+        {
+            return false;
+        }
+        Collider2D[] platformsScene = Physics2D.OverlapCircleAll(position, machineRadius, _platformMask);
+        if (platformsScene.Length > 0)
+        {
+            return false;
+        }
+        return true;
     }
     public void OnMachineDestroyed()
     {

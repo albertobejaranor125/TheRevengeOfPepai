@@ -7,7 +7,7 @@ public class DashAbility : MonoBehaviour
     [Header("Dash Settings")]
     [SerializeField] private float _dashTime = 0.2f;
     [SerializeField] private float _dashSpeed = 15f;
-
+    [SerializeField] private AudioClip _dashClip;
     private PlayerController2D _playerController2D;
     private bool _isDashing;
     private void Awake()
@@ -27,16 +27,8 @@ public class DashAbility : MonoBehaviour
         _isDashing = true;
         _playerController2D.IsDashing = true;
         _playerController2D.LastDashDirection = dir;
-        /*float timer = 0.0f;
-        while(timer < _dashTime)
-        {
-            float t = timer / _dashTime;
-            float speedMultiplier = Mathf.Lerp(1f, 0.2f, t);
-            _playerController2D.GetRigidbody2D().linearVelocity = dir * _dashSpeed * speedMultiplier;
-            timer += Time.deltaTime;
-            yield return null;
-        }*/
         _playerController2D.GetRigidbody2D().linearVelocity = dir * _dashSpeed;
+        _playerController2D.GetAudioSource().PlayOneShot(_dashClip);
         yield return new WaitForSeconds(_dashTime);
         _playerController2D.IsDashing = false;
         _isDashing = false;
