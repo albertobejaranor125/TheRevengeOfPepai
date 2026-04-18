@@ -59,8 +59,19 @@ public class PlayerController2D : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
-            _isGrounded = true;
-            _currentJumps = _maxJumps;
+            int i = 0;
+            bool foundGroundContact = false;
+            while (i < collision.contactCount && !foundGroundContact)
+            {
+                ContactPoint2D contact = collision.GetContact(i);
+                if(contact.normal.y > 0.5f)
+                {
+                    _isGrounded = true;
+                    _currentJumps = _maxJumps;
+                    foundGroundContact = true;
+                }
+                i++;
+            }
         }
     }
     private void OnCollisionExit2D(Collision2D collision)

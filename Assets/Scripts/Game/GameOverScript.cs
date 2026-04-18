@@ -19,6 +19,8 @@ public class GameOverScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        _scoreController.SetActive(true);
+        _timerController.SetActive(true);
         _gameOverPanel.SetActive(false);
         _restartButton.SetActive(false);
         _gameOverShown = false;

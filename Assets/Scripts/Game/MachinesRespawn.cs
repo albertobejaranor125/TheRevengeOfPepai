@@ -52,7 +52,7 @@ public class MachinesRespawn : MonoBehaviour
         Vector3 spawnPos = Vector3.zero;
         bool validPos = false;
         int attempts = 0;
-        while(attempts < 20 && !validPos)
+        while(attempts < 50 && !validPos)
         {
             float randomX = Random.Range(_minX, _maxX);
             float randomY = Random.Range(_minY, _maxY);
@@ -63,18 +63,22 @@ public class MachinesRespawn : MonoBehaviour
             }
             attempts++;
         }
-        Instantiate(_machinesList[indexSpawn], spawnPos, Quaternion.identity);
-        _currentMachines++;
+        if (validPos)
+        {
+            Instantiate(_machinesList[indexSpawn], spawnPos, Quaternion.identity);
+            _currentMachines++;
+        }
     }
     private bool IsValidPosition(Vector3 position)
     {
-        float machineRadius = 5f;
+        float platformRadius = 2.5f;
+        float machineRadius = 1.5f;
         Collider2D[] machinesScene = Physics2D.OverlapCircleAll(position, machineRadius, _machineMask);
         if (machinesScene.Length > 0)
         {
             return false;
         }
-        Collider2D[] platformsScene = Physics2D.OverlapCircleAll(position, machineRadius, _platformMask);
+        Collider2D[] platformsScene = Physics2D.OverlapCircleAll(position, platformRadius, _platformMask);
         if (platformsScene.Length > 0)
         {
             return false;
