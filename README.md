@@ -33,21 +33,23 @@ The goal is simple: repair as many machines as possible before time runs out. Pl
 
 ## Development
 
-This project was designed and programmed entirely by Alberto Bejarano Rodriguez.
-
 The main focus during development was improving game feel through movement, dash responsiveness, machine repair feedback, score combos, and quick arcade pacing.
 
 ## Assets and Credits
 
-- Robot sprites: Kenney Robot Pack
-- Platform assets: Kenney New Platformer Pack
-- Music: Pixabay
-- Sound effects: Pixabay and GameSounds.xyz
-- Font: Nasalization
+- Robot sprites: Kenney Robot Pack (https://kenney.nl/assets/robot-pack)
+- Platform assets: Kenney New Platformer Pack (https://kenney.nl/assets/new-platformer-pack)
+- Music: Pixabay (https://pixabay.com/music/upbeat-angry-robot-iii-113012/)
+- Sound effects: Pixabay and GameSounds.xyz (https://gamesounds.xyz/?search=space
+https://gamesounds.xyz/Kenney%27s%20Sound%20Pack/Digital%20Audio/phaseJump1.ogg,
+https://pixabay.com/sound-effects/nature-air-ambience-234180/, 
+https://pixabay.com/sound-effects/nature-gust-of-wind-511325/, 
+https://pixabay.com/sound-effects/film-special-effects-fireworkblast-106275/)
+- Font: Nasalization (https://www.dafont.com/es/nasalization.font?fpp=200&l[]=10&l[]=1)
 
 ## Play the Game
 
 You can play the game on itch.io.
 
-[Add your itch.io link here]
+(https://albertobejaranor.itch.io/the-revenge-of-pepai)
 
